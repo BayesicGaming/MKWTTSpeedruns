@@ -35,19 +35,37 @@ def process_video(video_path, progress_callback=None):
     step_if_no_time = 1
     step_if_time_found = 60.0
 
+    # Base resolution for reference (full HD)
+    BASE_WIDTH = 1920
+    BASE_HEIGHT = 1080
+
     # If you are running solo, only one text box will appear
     # If you are racing a ghost, two text boxes will appear, with
     #   the top time being the faster time and the bottom time being
     #   the slower time
-    roi_coords = {
-        "top": (1252, 360, 1575, 438),
-        "bottom": (1252, 563, 1575, 641),
-        "solo": (1250, 410, 1580, 500)
+    roi_percent = {
+        "top": (1252 / BASE_WIDTH, 360 / BASE_HEIGHT, 1575 / BASE_WIDTH, 438 / BASE_HEIGHT),
+        "bottom": (1252 / BASE_WIDTH, 563 / BASE_HEIGHT, 1575 / BASE_WIDTH, 641 / BASE_HEIGHT),
+        "solo": (1250 / BASE_WIDTH, 410 / BASE_HEIGHT, 1580 / BASE_WIDTH, 500 / BASE_HEIGHT)
     }
+
+    actual_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    actual_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
+    roi_coords = {}
+    for key, (x1p, y1p, x2p, y2p) in roi_percent.items():
+        x1 = int(x1p * actual_width)
+        y1 = int(y1p * actual_height)
+        x2 = int(x2p * actual_width)
+        y2 = int(y2p * actual_height)
+        roi_coords[key] = (x1, y1, x2, y2)
 
     # The ghost will always have a blue border, and your current run
     #   will always have a yellow border
-    border_pixel_coords = (1108, 436)     
+    border_pixel_coords = (
+        int(1108 / BASE_WIDTH * actual_width), 
+        int(436 * BASE_HEIGHT / actual_height)
+    )     
 
     while current_time_sec < duration_sec:
         # Increments seconds and sets current frame to the respective time
