@@ -1,0 +1,37 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter Notebook checkpoints (if any)
+.ipynb_checkpoints/
+
+# Environment
+.env
+.venv/
+venv/
+ENV/
+env/
+*.env
+
+# macOS and Windows system files
+.DS_Store
+Thumbs.db
+
+# VS Code settings (if using)
+.vscode/
+
+# Streamlit cache
+.streamlit/
+
+# Output files
+*.csv
+*.mp4
+
+# PyInstaller build files
+build/
+dist/
+*.spec
+
+# Log files
+*.log
