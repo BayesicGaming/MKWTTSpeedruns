@@ -143,5 +143,7 @@ def print_final_time(df):
     minutes, seconds = divmod(remainder, 60)
     milliseconds = round((seconds % 1) * 1000)
 
+    trivial_x = '2'
+
     formatted_total = f"{int(hours):02}:{int(minutes):02}:{int(seconds):02}.{int(milliseconds):03}"
     return f"Total Time: {formatted_total}"
